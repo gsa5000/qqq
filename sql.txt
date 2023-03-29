@@ -1,0 +1,65 @@
+create TABLE department
+(
+code char(3) primary key,
+depart varchar2(100)
+);
+
+create table status
+(
+code int primary KEY,
+status varchar2(100)
+);
+
+create table people
+(
+em_num char(5) primary key,
+depart_code char(3),
+status_code int,
+name varchar2(100),
+age int,
+gender char(1),
+HP varchar2(15) UNIQUE, 
+constraint myfk1 foreign key(depart_code) references department(code),
+constraint myfk2 foreign key(status_code) references status(code)
+);
+
+insert into department values('001','노동자');
+insert into department values('002','프롤레타리아');
+insert into department values('003','일꾼');
+
+insert into status values(1,'1급');
+insert into status values(2,'2급');
+insert into status values(3,'3급');
+
+insert into people values('00101','001',1,'김노예',24,'M','010-1111-1111');
+insert into people values('00102','002',2,'이노예',25,'W','010-1121-1112');
+insert into people values('00103','002',2,'박노예',19,'W','010-1141-1131');
+insert into people values('00104','001',1,'장노예',30,'M','010-1161-1511');
+insert into people values('00105','003',3,'배노예',35,'W','010-1161-1111');
+insert into people values('00106','001',3,'추노예',23,'W','010-1411-1111');
+insert into people values('00107','003',1,'황노예',33,'M','010-9111-1111');
+insert into people values('00108','002',3,'이이이',40,'W','010-1001-1211');
+insert into people values('00109','002',2,'이사장',35,'M','010-1711-1551');
+insert into people values('24601','001',1,'장발장',24,'M','010-2460-1246');
+
+select * from people where name like '이%';
+select max(age) from people;
+select name from people where age=(select min(age)from people);
+
+create view notslaves as select people.name "직원명",department.depart "부서",status.status"직급" from people 
+join department on department.code = people.depart_code join status on status.code = people.status_code;
+select * from notslaves;
+select * from people order by age desc;
+
+
+-----------------------------------------------------
+
+--create table __(__ primary key, __ not null, __ unique);
+--insert into __ () values ();
+--where __ in(,,),sum(),avg(),round(),max(),min()
+--alter table __ add __;
+--alter table __ modify __ __;
+--select __ from __ where __ group by;
+--select __ from __ where ___ having ___;
+--create view __ as select __"" from __ join __ on __=__; 
+--alter table __ add constraint __ foreign key () references __()
